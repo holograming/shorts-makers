@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Sentinel 데모</title>
+<style>
+@font-face{font-family:P;font-weight:500;src:url(../../../assets/fonts/Pretendard-Medium.woff2)}
+@font-face{font-family:P;font-weight:700;src:url(../../../assets/fonts/Pretendard-Bold.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(../../../assets/fonts/Pretendard-ExtraBold.woff2)}
+@font-face{font-family:P;font-weight:900;src:url(../../../assets/fonts/Pretendard-Black.woff2)}
+:root{--bg:#0d0e12;--line:#343947;--muse:#b9a6ff;--sen:#2ee6a6;--red:#ff4d5e;--hi:#ffd43b;--ink:#f4f5f7;--dim:#8a90a0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:P,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#tag{left:64px;top:72px;font:700 30px P;color:var(--dim);letter-spacing:.04em}
+#title{left:64px;top:118px;font:900 64px/1.15 P;letter-spacing:-.02em}
+#world{left:64px;top:300px;width:952px;height:300px}
+.site{position:absolute;top:0;padding:22px 30px;border-radius:22px;background:#1a1d25;border:3px solid var(--line);font:800 34px P;white-space:nowrap}
+.site small{display:block;font:600 22px P;color:var(--dim);margin-top:6px}
+#vm{left:64px;top:690px;width:952px;height:640px;border:4px solid var(--line);border-radius:40px;background:#12141a}
+#vmLabel{left:100px;top:1290px;font:700 26px P;color:var(--dim)}
+#gate{left:440px;top:672px;width:200px;height:40px;background:var(--bg)}
+#barrier{left:420px;top:676px;width:240px;height:28px;border-radius:14px;background:var(--red);transform-origin:center}
+#sentinel{left:480px;top:590px;width:120px;height:140px}
+#senLabel{left:620px;top:612px;font:800 28px P;color:var(--sen);white-space:nowrap}
+#muse{left:150px;top:900px;width:200px;height:200px;transform-origin:center bottom}
+#museLabel{left:180px;top:1112px;font:800 30px P;color:var(--muse)}
+#task{left:470px;top:820px;width:500px;padding:30px 34px;border-radius:28px;background:#1a1d25;border:3px solid var(--line)}
+#task h4{font:800 30px P;margin-bottom:18px}
+#task li{list-style:none;font:700 30px/1.75 P;color:var(--dim)}
+#task li.done{color:var(--ink)}
+#task li.done::before{content:"✓ ";color:var(--sen)}
+#task li.now::before{content:"… ";color:var(--hi)}
+.pkt{position:absolute;padding:16px 24px;border-radius:999px;font:800 30px P;white-space:nowrap;background:var(--hi);color:#111}
+#shards{left:0;top:0;width:1080px;height:1920px;pointer-events:none}
+#phone{left:150px;top:560px;width:780px;padding:46px 46px 40px;border-radius:44px;background:#f4f5f7;color:#111;box-shadow:0 30px 80px #000c}
+#phone .q{font:900 44px/1.3 P;letter-spacing:-.02em}
+#phone .url{margin-top:22px;padding:18px 24px;border-radius:18px;background:#e3e5ea;font:800 34px P}
+#phone .btns{display:flex;gap:20px;margin-top:34px}
+#phone .b{flex:1;text-align:center;padding:26px 0;border-radius:22px;font:900 38px P}
+#phone .no{background:#d9dce2}
+#phone .ok{background:#111;color:#fff}
+#finger{width:90px;height:90px;border-radius:50%;background:#ffffff55;border:5px solid #fff}
+#scaleNote{left:64px;top:1180px;width:952px;text-align:center;font:800 34px P;color:var(--hi)}
+#cap{left:64px;top:1420px;width:952px;font:900 70px/1.28 P;letter-spacing:-.03em;word-break:keep-all}
+#cap em{font-style:normal;color:var(--bg);background:var(--hi);padding:0 12px;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#outro{left:0;top:0;width:1080px;height:1920px;background:var(--bg);padding:0 84px;display:flex;flex-direction:column;justify-content:center}
+#outro .k{font:700 32px P;color:var(--dim);margin-bottom:30px}
+#outro .big{font:900 104px/1.2 P;letter-spacing:-.04em;word-break:keep-all}
+#outro .big em{font-style:normal;color:var(--hi)}
+#outro .sub{margin-top:44px;font:800 48px/1.35 P;color:var(--sen)}
+#outro .src{position:absolute;left:84px;bottom:120px;font:600 28px/1.5 P;color:var(--dim)}
+#bar{left:0;top:0;height:10px;background:var(--hi)}
+</style>
+</head>
+<body>
+<div id="bar" class="abs"></div>
+<div id="tag" class="abs">SAVED · 영상 64분 → 45초</div>
+<div id="title" class="abs">AI 비서 옆에는<br>감시 AI가 있다</div>
+
+<div id="world" class="abs">
+  <div class="site" id="s1" style="left:0">hospital.kr<small>예약 사이트 · 허용됨</small></div>
+  <div class="site" id="s2" style="left:360px">bank.com<small>결제 · 허용됨</small></div>
+  <div class="site" id="s3" style="left:600px;top:150px;border-style:dashed">clinic-booking.xyz<small>처음 보는 사이트</small></div>
+</div>
+
+<div id="vm" class="abs"></div>
+<div id="gate" class="abs"></div>
+<div id="barrier" class="abs"></div>
+<div id="vmLabel" class="abs">Secure VM — 내 정보가 사는 작은 컴퓨터</div>
+
+<svg id="sentinel" class="abs" viewBox="0 0 120 140">
+  <path id="shield" d="M60 4 L112 24 V70 C112 104 88 126 60 136 C32 126 8 104 8 70 V24 Z" fill="#12141a" stroke="#2ee6a6" stroke-width="7"/>
+  <ellipse cx="60" cy="68" rx="30" ry="20" fill="#2ee6a6" id="eyeW"/>
+  <circle cx="60" cy="68" r="11" fill="#0d0e12" id="pupil"/>
+</svg>
+<div id="senLabel" class="abs">Sentinel · 문지기</div>
+
+<svg id="muse" class="abs" viewBox="0 0 200 200">
+  <path d="M100 18 C160 18 186 64 186 112 C186 162 150 190 100 190 C50 190 14 162 14 112 C14 64 40 18 100 18 Z" fill="#b9a6ff"/>
+  <ellipse id="e1" cx="74" cy="104" rx="11" ry="16" fill="#111"/>
+  <ellipse id="e2" cx="126" cy="104" rx="11" ry="16" fill="#111"/>
+  <path d="M84 140 Q100 152 116 140" stroke="#111" stroke-width="7" fill="none" stroke-linecap="round"/>
+</svg>
+<div id="museLabel" class="abs">Muse · 일하는 AI</div>
+
+<div id="task" class="abs"><h4>할머니 진료 예약</h4><ul>
+  <li id="t1">병원 찾기</li><li id="t2">빈 시간 확인</li><li id="t3">예약 양식 작성</li><li id="t4">결제</li></ul></div>
+
+<div id="p1" class="pkt">이름 · 연락처</div>
+<div id="p2" class="pkt" style="background:var(--red);color:#fff">카드번호 4012 ●●●● ●●●●</div>
+<div id="p3" class="pkt">예약 요청</div>
+<svg id="shards" class="abs"></svg>
+
+<div id="scaleNote" class="abs">에이전트가 커지면 → 감시자도 같이 커진다</div>
+
+<div id="phone" class="abs">
+  <div class="q">Muse가 처음 보는 사이트에<br>정보를 보내려 해요</div>
+  <div class="url">clinic-booking.xyz</div>
+  <div class="btns"><div class="b no">거절</div><div class="b ok" id="okBtn">허용</div></div>
+</div>
+<div id="finger" class="abs"></div>
+
+<div id="cap" class="abs"></div>
+
+<div id="outro" class="abs">
+  <div class="k">내가 남기는 한 줄</div>
+  <div class="big">일하는 AI와<br><em>막는 AI</em>를<br>따로 둔다.</div>
+  <div class="sub">마지막 결정은 사람이.</div>
+  <div class="src">출처 · ARBTY | 아비트라리 「메타가 바라보는 AI 미래와 인류 미래 (알렉산더 왕)」<br>원본 화면은 쓰지 않고 내용만 다시 그렸습니다</div>
+</div>
+
+<script>
+const T = 45;
+const $ = id => document.getElementById(id);
+const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => cl((t - a) / (b - a));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const out = x => 1 - Math.pow(1 - x, 3);
+const back = x => { const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const show = (el, o, extra = '') => { el.style.opacity = o; el.style.transform = extra; };
+
+// [시작, 끝, 자막] — 원문 번역이 아니라 내 말로
+const CAPS = [
+  [0.0, 3.6, '64분 인터뷰를 <em>45초</em>로 줄였다'],
+  [3.6, 10.8, 'Muse는 <em>격리된 작은 컴퓨터</em><br>안에서만 일한다'],
+  [10.8, 15.0, '밖으로 나가는 건 전부<br><em>Sentinel</em>이 검사한다'],
+  [15.0, 20.2, '카드번호? <em>그건 안에 둔다</em>'],
+  [20.2, 29.0, '처음 보는 사이트면<br><em>사람에게 묻는다</em>'],
+  [29.0, 34.0, 'AI가 똑똑해질수록<br>사람 눈으론 <em>못 따라간다</em>'],
+  [34.0, 38.6, '그래서 감시 AI도 <em>같이 키운다</em>'],
+];
+
+// 패킷: 안(시작) → 문(게이트) → 바깥(목적지)
+const GATE = { x: 540, y: 690 };
+function pkt(el, t, t0, from, to, blocked) {
+  const w = el.offsetWidth, h = el.offsetHeight;
+  if (t < t0) { el.style.opacity = 0; return; }
+  const a = seg(t, t0, t0 + 1.4), b = seg(t, t0 + 1.4, t0 + 2.6);
+  let x, y, o = 1;
+  if (a < 1) { x = lerp(from.x, GATE.x, ease(a)); y = lerp(from.y, GATE.y + 40, ease(a)); }
+  else if (!blocked) { x = lerp(GATE.x, to.x, ease(b)); y = lerp(GATE.y + 40, to.y, ease(b)); o = 1 - seg(t, t0 + 2.4, t0 + 2.9); }
+  else { const k = seg(t, t0 + 1.4, t0 + 1.9); x = GATE.x; y = GATE.y + 40 + out(k) * 70; o = 1 - k; }
+  el.style.opacity = o;
+  el.style.left = (x - w / 2) + 'px'; el.style.top = (y - h / 2) + 'px';
+}
+
+function shards(t, t0) {
+  const svg = $('shards'); const k = seg(t, t0, t0 + 1.2);
+  if (k <= 0 || k >= 1) { svg.innerHTML = ''; return; }
+  let s = '';
+  for (let i = 0; i < 14; i++) {
+    const ang = (i / 14) * Math.PI * 2 + i, d = out(k) * (90 + (i % 4) * 40);
+    const x = GATE.x + Math.cos(ang) * d, y = GATE.y + 60 + Math.sin(ang) * d * .7;
+    s += `<rect x="${x}" y="${y}" width="${16 - i % 3 * 4}" height="${16 - i % 3 * 4}" fill="#ff4d5e" opacity="${1 - k}" transform="rotate(${k * 300 + i * 30} ${x} ${y})"/>`;
+  }
+  svg.innerHTML = s;
+}
+
+window.render = function (t) {
+  $('bar').style.width = (t / T * 1080) + 'px';
+
+  // 등장
+  const intro = out(seg(t, 0.2, 1.4));
+  ['tag', 'title'].forEach(id => show($(id), intro, `translateY(${(1 - intro) * 30}px)`));
+  const stage = out(seg(t, 1.0, 2.6));
+  ['vm', 'gate', 'vmLabel', 'world'].forEach(id => $(id).style.opacity = stage);
+  show($('muse'), stage, `scale(${lerp(.6, 1, back(seg(t, 1.2, 2.6)))})`);
+  $('museLabel').style.opacity = stage;
+  show($('sentinel'), out(seg(t, 2.0, 3.2)), `translateY(${(1 - out(seg(t, 2.0, 3.2))) * -40}px)`);
+  $('senLabel').style.opacity = out(seg(t, 2.4, 3.4));
+  const tk = out(seg(t, 2.2, 3.4));
+  show($('task'), tk, `translateX(${(1 - tk) * 60}px)`);
+
+  // 체크리스트 진행
+  const steps = [[4.2, 't1'], [5.6, 't2'], [9.6, 't3'], [99, 't4']];
+  let nowSet = false;
+  steps.forEach(([at, id]) => {
+    const li = $(id); li.className = '';
+    if (t >= at) li.className = 'done';
+    else if (!nowSet && t > 3.4) { li.className = 'now'; nowSet = true; }
+  });
+  if (t >= 27.5) $('t3').className = 'done';
+
+  // 사이트 하이라이트
+  $('s1').style.borderColor = (t > 8.2 && t < 9.8) ? 'var(--sen)' : 'var(--line)';
+  const s3on = t > 19.6;
+  $('s3').style.opacity = stage * (s3on ? 1 : .35);
+  $('s3').style.borderColor = (t > 26.6 && t < 28.2) ? 'var(--sen)' : 'var(--line)';
+
+  // 패킷
+  pkt($('p1'), t, 6.6, { x: 330, y: 960 }, { x: 160, y: 360 }, false);
+  pkt($('p2'), t, 13.2, { x: 330, y: 960 }, null, true);
+  pkt($('p3'), t, 25.6, { x: 330, y: 960 }, { x: 780, y: 520 }, false);
+  shards(t, 14.6);
+
+  // Sentinel 상태: 검사(눈 움직임) / 차단(빨강)
+  const alarm = t > 14.4 && t < 18.4;
+  const flash = alarm ? (Math.sin((t - 14.4) * 18) > 0 ? 1 : .55) : 1;
+  const col = alarm ? '#ff4d5e' : '#2ee6a6';
+  $('shield').setAttribute('stroke', col); $('eyeW').setAttribute('fill', col);
+  $('eyeW').style.opacity = flash;
+  const look = Math.sin(t * 1.6) * 9;
+  $('pupil').setAttribute('cx', 60 + (alarm ? 0 : look));
+  $('senLabel').style.color = col;
+  $('senLabel').textContent = alarm ? 'Sentinel · 차단!' : 'Sentinel · 문지기';
+  const bar = alarm ? back(seg(t, 14.4, 14.8)) * (1 - seg(t, 17.8, 18.4)) : 0;
+  $('barrier').style.opacity = bar > 0 ? 1 : 0;
+  $('barrier').style.transform = `scaleX(${bar})`;
+  // 놀라는 Muse 눈
+  const blink = (t % 3.2) < .12 ? .15 : 1;
+  const surprise = alarm ? 1.35 : 1;
+  ['e1', 'e2'].forEach(id => $(id).setAttribute('ry', 16 * blink * surprise));
+
+  // 휴대폰 확인창 20.6~26
+  const ph = out(seg(t, 20.8, 21.6)) * (1 - seg(t, 25.3, 25.9));
+  show($('phone'), ph, `translateY(${(1 - ph) * 120}px) scale(${lerp(.94, 1, ph)})`);
+  const fIn = seg(t, 22.6, 24.0), tap = seg(t, 24.2, 24.6);
+  $('finger').style.opacity = ph * cl(fIn * 3) ;
+  $('finger').style.left = lerp(900, 640, ease(fIn)) + 'px';
+  $('finger').style.top = lerp(1300, 870, ease(fIn)) + 'px';
+  $('finger').style.transform = `scale(${1 - Math.sin(tap * Math.PI) * .25})`;
+  $('okBtn').style.background = tap > .5 ? 'var(--sen)' : '#111';
+  $('okBtn').style.color = tap > .5 ? '#111' : '#fff';
+
+  // 커지는 Muse, 따라 커지는 Sentinel 29~38
+  const g1 = ease(seg(t, 29.4, 32.6));              // Muse만 커짐
+  const g2 = ease(seg(t, 34.0, 36.6));              // Sentinel이 따라잡음
+  $('muse').style.transform = `scale(${1 + g1 * .75})`;
+  $('sentinel').style.transform = `scale(${1 + g2 * .9})`;
+  $('sentinel').style.transformOrigin = 'center 60%';
+  $('senLabel').style.transform = `translate(${g2 * 40}px, ${g2 * -20}px)`;
+  const taskFade = 1 - seg(t, 29.0, 29.8);
+  if (t > 29) $('task').style.opacity = taskFade;
+  // 사람 눈이 못 따라감: 세상과 VM이 희미해짐
+  const dimW = seg(t, 30.4, 31.4) * (1 - seg(t, 34.0, 35.0));
+  $('world').style.filter = `blur(${dimW * 6}px)`;
+  const sn = out(seg(t, 34.6, 35.6));
+  show($('scaleNote'), sn, `translateY(${(1 - sn) * 20}px)`);
+
+  // 자막
+  const c = CAPS.find(([a, b]) => t >= a && t < b);
+  const cap = $('cap');
+  if (c) {
+    const k = out(seg(t, c[0], c[0] + .35)), e = 1 - seg(t, c[1] - .2, c[1]);
+    cap.innerHTML = c[2]; cap.style.opacity = k * e; cap.style.transform = `translateY(${(1 - k) * 24}px)`;
+  } else cap.style.opacity = 0;
+
+  // 아웃트로 38.6~45
+  const o = out(seg(t, 38.6, 39.6));
+  $('outro').style.opacity = o;
+  const big = $('outro').querySelector('.big'), sub = $('outro').querySelector('.sub'), src = $('outro').querySelector('.src');
+  big.style.transform = `translateY(${(1 - o) * 40}px)`;
+  const so = out(seg(t, 40.8, 41.8)); sub.style.opacity = so; sub.style.transform = `translateY(${(1 - so) * 20}px)`;
+  src.style.opacity = out(seg(t, 41.6, 42.6));
+};
+window.DURATION = T;
+const q = new URLSearchParams(location.search);
+if (q.has('t')) render(+q.get('t'));
+else { const s = performance.now(); (function loop() { render(((performance.now() - s) / 1000) % T); requestAnimationFrame(loop); })(); }
+</script>
+</body>
+</html>

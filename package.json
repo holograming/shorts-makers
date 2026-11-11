@@ -1,0 +1,15 @@
+{
+  "name": "shorts-makers",
+  "private": true,
+  "description": "내가 본 기술 영상을 내 말·내 필체의 숏폼으로 줄이고, 그 과정을 기록한다",
+  "scripts": {
+    "setup:fonts": "node tools/fonts.cjs",
+    "stills": "node tools/stills.cjs",
+    "render": "node tools/render.cjs",
+    "cut": "node tools/cut.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0",
+    "pretendard": "1.3.9"
+  }
+}

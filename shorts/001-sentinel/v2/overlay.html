@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>overlay</title>
+<style>
+@font-face{font-family:P;font-weight:700;src:url(../../../assets/fonts/Pretendard-Bold.woff2)}
+@font-face{font-family:P;font-weight:800;src:url(../../../assets/fonts/Pretendard-ExtraBold.woff2)}
+@font-face{font-family:P;font-weight:900;src:url(../../../assets/fonts/Pretendard-Black.woff2)}
+:root{--bg:#0d0e12;--hi:#ffd43b;--sen:#2ee6a6;--ink:#f4f5f7;--dim:#a3a9b8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font-family:P,sans-serif;color:var(--ink)}
+.abs{position:absolute}
+#tag{left:64px;top:150px;font:700 32px P;color:var(--dim);letter-spacing:.04em}
+#title{left:64px;top:200px;font:900 76px/1.14 P;letter-spacing:-.03em;text-shadow:0 4px 24px #000a}
+#speaker{left:64px;top:1112px;padding:12px 22px;border-radius:14px;background:#000b;font:800 30px P}
+#cap{left:64px;top:1268px;width:952px;font:900 78px/1.26 P;letter-spacing:-.03em;word-break:keep-all;text-shadow:0 4px 28px #000c}
+#cap em{font-style:normal;color:var(--bg);background:var(--hi);padding:0 12px;border-radius:12px;text-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#outro{left:0;top:0;width:1080px;height:1920px;background:var(--bg);padding:0 84px;display:none;flex-direction:column;justify-content:center}
+#outro .k{font:700 32px P;color:var(--dim);margin-bottom:30px}
+#outro .big{font:900 104px/1.2 P;letter-spacing:-.04em;word-break:keep-all}
+#outro .big em{font-style:normal;color:var(--hi)}
+#outro .sub{margin-top:44px;font:800 48px/1.35 P;color:var(--sen)}
+#outro .src{position:absolute;left:84px;right:84px;bottom:140px;font:700 26px/1.5 P;color:var(--dim)}
+</style>
+</head>
+<body>
+<div id="tag" class="abs"></div>
+<div id="title" class="abs"></div>
+<div id="speaker" class="abs"></div>
+<div id="cap" class="abs"></div>
+<div id="outro" class="abs"><div class="k">내가 남기는 한 줄</div><div class="big"></div><div class="sub"></div><div class="src"></div></div>
+<script>
+// paint({tag,title,speaker,cap}) 또는 paint({outro:{big,sub}, source})
+window.paint = s => {
+  const $ = id => document.getElementById(id);
+  $('tag').textContent = s.tag || '';
+  $('title').innerHTML = s.title || '';
+  $('speaker').textContent = s.speaker || ''; $('speaker').style.display = s.speaker ? 'block' : 'none';
+  $('cap').innerHTML = s.cap || '';
+  const o = $('outro');
+  o.style.display = s.outro ? 'flex' : 'none';
+  if (s.outro) {
+    o.querySelector('.big').innerHTML = s.outro.big;
+    o.querySelector('.sub').textContent = s.outro.sub || '';
+    o.querySelector('.src').textContent = s.source || '';
+  }
+};
+</script>
+</body>
+</html>

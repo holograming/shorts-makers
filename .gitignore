@@ -1,0 +1,10 @@
+node_modules/
+assets/fonts/
+# 결과물·중간물은 커밋하지 않는다 (원본 구간 영상 포함)
+*.mp4
+*.mov
+*.webm
+*.json3
+*.vtt
+build/
+frames/
