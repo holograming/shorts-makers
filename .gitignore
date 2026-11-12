@@ -8,3 +8,5 @@ assets/fonts/
 *.vtt
 build/
 frames/
+# 형태 샘플 이미지(원본 정지 화면 포함)
+shorts/*/sample/*.png
