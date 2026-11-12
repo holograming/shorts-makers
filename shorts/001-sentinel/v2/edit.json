@@ -2,6 +2,7 @@
   "title": "AI 비서 옆에는<br>감시 AI가 있다",
   "tag": "SAVED · 64분 → 48초",
   "speaker": "Alexandr Wang · Meta",
+  "fg": { "keep": 0.64, "y": 700 },
   "source": "출처 · ARBTY | 아비트라리 「메타가 바라보는 AI 미래와 인류 미래 (알렉산더 왕)」 youtu.be/yROCJ0OrSLE",
   "clips": [
     { "file": "c1.mp4", "from": "18:10.3", "to": "18:19.3", "caps": [

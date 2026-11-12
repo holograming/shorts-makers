@@ -8,6 +8,8 @@ const path = require('node:path');
 
 const dir = path.resolve(process.argv[2] || '.');
 const E = JSON.parse(fs.readFileSync(path.join(dir, 'edit.json'), 'utf8'));
+// fg.keep: 원본 위에서부터 남길 높이 비율(박힌 자막 띠를 뺄 때), fg.y: 가운데 원본의 위치
+const FG = { keep: 1, y: 520, ...E.fg };
 const build = path.join(dir, 'build'); fs.mkdirSync(build, { recursive: true });
 const sec = s => String(s).split(':').reduce((a, x) => a * 60 + +x, 0);
 const ff = args => execFileSync('ffmpeg', ['-loglevel', 'error', '-y', ...args], { stdio: 'inherit' });
@@ -40,7 +42,7 @@ const AUD = ['-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2'];
     const input = fs.existsSync(own) ? ['-i', own] : ['-ss', String(sec(c.from)), '-to', String(sec(c.to)), '-i', path.join(dir, 'full.mp4')];
     const ov = c.caps.flatMap((_, k) => ['-loop', '1', '-i', path.join(build, `o${i}_${k}.png`)]);
     let f = `[0:v]split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=28:2,eq=brightness=-0.32[bg];` +
-            `[b]scale=1080:-2[fg];[bg][fg]overlay=0:520[v0]`;
+            `[b]crop=iw:trunc(ih*${FG.keep}/2)*2:0:0,scale=1080:-2[fg];[bg][fg]overlay=0:${FG.y}[v0]`;
     c.caps.forEach(([s, e], k) => { f += `;[v${k}][${k + 1}:v]overlay=0:0:enable='between(t,${s},${e})'[v${k + 1}]`; });
     f += `;[v${c.caps.length}]format=yuv420p[vo]`;
     f += `;[0:a]loudnorm=I=-14:TP=-1.5,afade=t=in:d=0.06,afade=t=out:st=${(dur - 0.08).toFixed(2)}:d=0.08[ao]`;

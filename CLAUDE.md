@@ -16,19 +16,16 @@
 ## 커밋
 - 제목 `type(scope): 요약` 한국어 72자 이하. 본문은 `대상: 무엇을` 목록, 끝에 `근거:` · `검증:` · `세션:`.
 
-## 지금 상태와 다음 할 일 (2026-11-11 기준)
-- **001-sentinel v2 대기 중**: 편집안 `shorts/001-sentinel/v2/edit.json` 완성, 원본 5구간 파일만 없다.
-- 내 컴퓨터에서(로컬 세션이면 직접):
+## 지금 상태와 다음 할 일 (2026-11-12 기준)
+- **001-sentinel v2 결정 2 = 올림** (로컬에서 렌더 · 확인). 업로드 경로가 없어 올림 대기.
+- 원본 구간 받기(내 컴퓨터, 2026-11-12 검증) — `--download-sections` 여러 개를 한 번에 주면 `section_number` 가 NA 라 한 파일에 덮어쓴다. 구간마다 따로 받는다:
   ```sh
-  cd shorts/001-sentinel/v2
-  yt-dlp -f "bv*[height<=1080]+ba/b" --merge-output-format mp4 --force-keyframes-at-cuts \
-    --download-sections "*18:10.3-18:19.3" --download-sections "*18:24.2-18:33.4" \
-    --download-sections "*18:38.4-18:51.0" --download-sections "*27:36.9-27:46.0" \
-    --download-sections "*31:01.3-31:06.1" \
-    -o "c%(section_number)s.%(ext)s" "https://www.youtube.com/watch?v=yROCJ0OrSLE"
-  cd ../../.. && npm run cut -- shorts/001-sentinel/v2    # → v2/out.mp4
+  cd shorts/<편>/v2; i=1
+  for s in 18:10.3-18:19.3 18:24.2-18:33.4 ...; do
+    yt-dlp --js-runtimes node -f "bv*[height<=1080]+ba/b" --merge-output-format mp4 --force-keyframes-at-cuts \
+      --download-sections "*$s" -o "c$i.%(ext)s" "<원본 URL>"; i=$((i+1)); done
+  cd ../../.. && npm run cut -- shorts/<편>/v2    # → out.mp4
   ```
-  파일 이름이 c1~c5 로 안 나오면 순서대로 바꾼다(실행 검증 안 된 명령). 또는 원본 전체를 `v2/full.mp4` 로 두면 `cut.cjs` 가 구간을 잘라 쓴다.
-  `out.mp4` 를 프레임 몇 장으로 확인한 뒤 사용자에게 **결정 2**를 묻는다.
+  yt-dlp 는 최신으로(2025.09 버전은 오래됨, 2026.10.26 로 검증). 원본에 자막이 박혀 있으면 `edit.json` 의 `fg.keep`(위에서 남길 비율) · `fg.y` 로 뺀다.
 - 그 다음 순서(추천): 이슈 라벨(상태) 만들고 001 이슈화 → 슬랙 수집기(토큰 필요) → GitHub Actions 비공개 업로드.
 - 아직 없는 것: 새 인스타 · 유튜브 계정, 슬랙 앱, 이 레포에 대한 Claude GitHub 앱 권한(클라우드 세션 push 거절됨).

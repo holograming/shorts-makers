@@ -23,14 +23,14 @@
 | 자막: **원어(en-orig) 자동자막** | ✅ 클라우드 | `yt-dlp --js-runtimes node --skip-download --write-auto-subs --sub-langs en-orig --sub-format json3` — 단어 단위 타임코드가 나온다 |
 | 구간 선택 | ✅ | json3 단어 타임코드로 문장 경계를 0.1초 단위로 자름 |
 | HTML 데모 → mp4 | ✅ | `render.cjs` 1350프레임 약 70초 + ffmpeg |
-| 원본 구간 편집 | ✅(가짜 영상) | `cut.cjs` — 컬러바 테스트로 1080×1920 · 30fps · 47.9초 확인. 진짜 원본으로는 아직 안 함 |
-| **원본 영상 받기** | ❌ 클라우드 | "Sign in to confirm you're not a bot" — 데이터센터 IP 차단. 쿠키 넘기기는 계정 위험이라 안 씀 → **내 컴퓨터 몫** |
+| 원본 구간 편집 | ✅ 로컬 | `cut.cjs` — 001 진짜 원본으로 1080×1920 · 30fps · 47.9초 · -14.5 LUFS (2026-11-12) |
+| **원본 영상 받기** | ❌ 클라우드 | "Sign in to confirm you're not a bot" — 데이터센터 IP 차단. 쿠키 넘기기는 계정 위험이라 안 씀 → **내 컴퓨터 몫**. 로컬에서 구간별로 받아짐(2026-11-12) |
 | 영상 내용 보기 | 반쪽 | 에이전트는 재생 · 청취를 못 하고 대본만 읽는다. 파일이 있으면 프레임을 뽑아 볼 수 있다 |
 | 슬랙 · Meta Graph | ⏸ 클라우드 | `slack.com` · `graph.facebook.com` 이 허용 호스트에 없음. 토큰을 보안 폼으로 받으면 호스트도 같이 열린다 |
 | 유튜브 업로드 API | ⏸ | `www.googleapis.com` 은 닿음. 그러나 OAuth 접근 토큰이 1시간마다 만료 → 고정 키 주입으로는 안 됨 → GitHub Actions 에서 refresh token 으로 |
 | 인스타 업로드 | ⏸ | ueber-secondbrain `ig-graph-facebook-login-path` 경로(페이지 토큰) + `instagram_content_publish` 권한. 릴스는 공개 URL 영상이 필요 |
 
 ## 화면 규칙 (v2)
-- 9:16. 원본은 가운데 1080 폭(y=520), 위아래는 같은 영상을 흐리게 · 어둡게.
+- 9:16. 원본은 가운데 1080 폭(기본 y=520, 박힌 자막이 있으면 `fg.keep` · `fg.y`), 위아래는 같은 영상을 흐리게 · 어둡게.
 - 위: 태그(`SAVED · 원본분 → 결과초`) + 제목. 아래: 내 자막(두꺼운 고딕, 강조는 노란 박스). 첫 구간에 화자 이름표.
 - 끝: "내가 남기는 한 줄" 카드 3초 + 출처. 원본 소리는 살리고 loudnorm -14 LUFS.
