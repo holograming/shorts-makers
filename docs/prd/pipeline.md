@@ -13,7 +13,7 @@
   → ⑥ 비공개 업로드 [GitHub Actions] (published)
   ❓ 결정 3 (주 1회): 세컨브레인에 남길 판단
 ```
-원장은 GitHub 이슈(라벨 = 상태). 한 편의 질문 · 결정 · 버린 이유는 `shorts/<번호>/RECORD.md`에도 남긴다.
+원장은 GitHub 이슈(라벨 = 상태). 한 편의 질문 · 결정 · 버린 이유는 `shorts/<번호>/RECORD.md`에도 남긴다. 결정 지점은 [rules/workflow.md](../rules/workflow.md).
 
 ## 실제로 확인한 것 (2026-11-11)
 | 단계 | 상태 | 근거 · 메모 |
@@ -30,7 +30,7 @@
 | 유튜브 업로드 API | ⏸ | `www.googleapis.com` 은 닿음. 그러나 OAuth 접근 토큰이 1시간마다 만료 → 고정 키 주입으로는 안 됨 → GitHub Actions 에서 refresh token 으로 |
 | 인스타 업로드 | ⏸ | ueber-secondbrain `ig-graph-facebook-login-path` 경로(페이지 토큰) + `instagram_content_publish` 권한. 릴스는 공개 URL 영상이 필요 |
 
-## 화면 규칙 (v2)
+## 화면 규칙 (v2 처음 모양 — 2026-11-12 결정으로 바뀜, 지금 규칙은 [rules/source.md](../rules/source.md))
 - 9:16. 원본은 가운데 1080 폭(기본 y=520, 박힌 자막이 있으면 `fg.keep` · `fg.y`), 위아래는 같은 영상을 흐리게 · 어둡게.
 - 위: 태그(`SAVED · 원본분 → 결과초`) + 제목. 아래: 내 자막(두꺼운 고딕, 강조는 노란 박스). 첫 구간에 화자 이름표.
 - 끝: "내가 남기는 한 줄" 카드 3초 + 출처. 원본 소리는 살리고 loudnorm -14 LUFS.
