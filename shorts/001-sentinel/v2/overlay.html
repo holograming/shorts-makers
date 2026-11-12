@@ -11,8 +11,8 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1080px;height:1920px;overflow:hidden;background:transparent;font-family:P,sans-serif;color:var(--ink)}
 .abs{position:absolute}
-#tag{left:64px;top:150px;font:700 32px P;color:var(--dim);letter-spacing:.04em}
-#title{left:64px;top:200px;font:900 76px/1.14 P;letter-spacing:-.03em;text-shadow:0 4px 24px #000a}
+#tag{left:64px;top:72px;font:700 30px P;color:var(--dim);letter-spacing:.04em}
+#title{left:64px;top:118px;font:900 64px/1.15 P;letter-spacing:-.02em}  /* 이해 장면(v1)과 같은 자리 — 전환 때 뛰지 않게 */
 #speaker{left:64px;top:1112px;padding:12px 22px;border-radius:14px;background:#000b;font:800 30px P}
 #cap{left:64px;top:1268px;width:952px;font:900 78px/1.26 P;letter-spacing:-.03em;word-break:keep-all;text-shadow:0 4px 28px #000c}
 #cap em{font-style:normal;color:var(--bg);background:var(--hi);padding:0 12px;border-radius:12px;text-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
@@ -38,6 +38,12 @@ window.paint = s => {
   $('title').innerHTML = s.title || '';
   $('speaker').textContent = s.speaker || ''; $('speaker').style.display = s.speaker ? 'block' : 'none';
   $('cap').innerHTML = s.cap || '';
+  // layout {capTop, capH, capSize, speakerTop}: 자막을 원본 위 띠 안에 얹을 때(cut.cjs 가 계산해 넘긴다)
+  const L = s.layout || {}, cap = $('cap').style;
+  if (L.capSize) cap.fontSize = L.capSize + 'px';
+  if (L.capTop != null && s.cap) $('cap').innerHTML = `<div>${s.cap}</div>`;  // flex 안에서 줄 흐름 유지
+  if (L.capTop != null) Object.assign(cap, { top: L.capTop + 'px', height: L.capH + 'px', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center', left: '40px', width: '1000px', lineHeight: '1.22' });
+  if (L.speakerTop != null) $('speaker').style.top = L.speakerTop + 'px';
   const o = $('outro');
   o.style.display = s.outro ? 'flex' : 'none';
   if (s.outro) {
