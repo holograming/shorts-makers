@@ -9,11 +9,8 @@
 | [template.md](template.md) | 원본 그대로 + 내 노트 템플릿 · 전달 장치 · 리듬 규칙 | 초안 |
 | [research-agentos.md](research-agentos.md) | AgentOS 채널 9편 조사 표(template 의 근거) | 2026-11-13 |
 
-## 지금 상태와 다음 할 일 (2026-11-13 기준)
-- 001-sentinel v2: 원본 자막 그대로 + 이해 장면 3초 ×4 + 내 한 줄, 59.9초로 렌더함. 결정 2 미정(형식 자체를 다시 보는 중).
-- 다음: template.md 검토 → 001 을 새 틀로 형태 샘플 → 결정.
-- 그 뒤(추천 순서): 이슈 라벨(상태) · 001 이슈화 → 슬랙 수집기(토큰 필요) → GitHub Actions 비공개 업로드.
-- 아직 없는 것: 새 인스타 · 유튜브 계정, 슬랙 앱, 이 레포에 대한 Claude GitHub 앱 권한.
+## 지금 상태와 다음 할 일
+→ 옮김: [docs/sessions/README.md](../sessions/README.md)
 
 ## 원본 구간 받기 (내 컴퓨터, 2026-11-12 검증)
 `--download-sections` 를 한 번에 여러 개 주면 `section_number` 가 NA 라 한 파일에 덮어쓴다. 구간마다 따로 받는다.

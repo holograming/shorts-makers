@@ -14,6 +14,7 @@
 | 원본 · 자막 · 저작권 | [docs/rules/source.md](docs/rules/source.md) |
 | 커밋 · 브랜치 · 커밋하지 않는 것 | [docs/rules/commit.md](docs/rules/commit.md) |
 | 지금까지의 결정 | [docs/decisions.md](docs/decisions.md) |
-| 시험 중인 기획 · 지금 상태 · 다음 할 일 | [docs/prd/README.md](docs/prd/README.md) |
+| 지금 상태 · 다음 할 일 · 지난 세션 회고 | [docs/sessions/README.md](docs/sessions/README.md) |
+| 시험 중인 기획 | [docs/prd/README.md](docs/prd/README.md) |
 | 문서를 어디에 두나 | [docs/README.md](docs/README.md) |
 | 한 편의 질문 · 결정 · 버린 이유 | `shorts/<번호>-<주제>/RECORD.md` |
