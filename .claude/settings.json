@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "ueber-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "holograming/ueber-plugin"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "small-step@ueber-plugins": true
+  }
+}
