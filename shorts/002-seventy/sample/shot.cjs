@@ -3,7 +3,7 @@ const { pathToFileURL } = require('node:url');
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
-  for (const s of [1, 2, 3]) {
+  for (const s of [1, 2, 3, 4, 5, 6]) {
     await p.goto(pathToFileURL(__dirname + '/sample.html').href + '?s=' + s);
     await p.evaluate(() => document.fonts.ready);
     await p.screenshot({ path: `${__dirname}/frame${s}.png` });
