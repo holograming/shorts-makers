@@ -10,7 +10,7 @@
 | [research-agentos.md](research-agentos.md) | AgentOS 채널 9편 조사 표(template 의 근거) | 2026-11-13 |
 
 ## 지금 상태와 다음 할 일
-→ 옮김: [docs/sessions/README.md](../sessions/README.md)
+→ 옮김: [.claude/small-step.md](../../.claude/small-step.md)
 
 ## 원본 구간 받기 (내 컴퓨터, 2026-11-12 검증)
 `--download-sections` 를 한 번에 여러 개 주면 `section_number` 가 NA 라 한 파일에 덮어쓴다. 구간마다 따로 받는다.
